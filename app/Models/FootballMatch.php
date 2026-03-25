@@ -15,19 +15,34 @@ class FootballMatch extends Model
         return $this->id;
     }
 
-    public function getHomeTeam(): string
+    public function getHomeTeamEn(): string
     {
-        return $this->home_team;
+        return $this->home_team_en;
     }
 
-    public function getAwayTeam(): string
+    public function getHomeTeamKa(): string
     {
-        return $this->away_team;
+        return $this->home_team_ka;
     }
 
-    public function getStadium(): string
+    public function getAwayTeamEn(): string
     {
-        return $this->stadium;
+        return $this->away_team_en;
+    }
+
+    public function getAwayTeamKa(): string
+    {
+        return $this->away_team_ka;
+    }
+
+    public function getStadiumEn(): string
+    {
+        return $this->stadium_en;
+    }
+
+    public function getStadiumKa(): string
+    {
+        return $this->stadium_ka;
     }
 
     public function getMatchDate(): Carbon
