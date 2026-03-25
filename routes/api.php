@@ -13,4 +13,12 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+// Fan-only
+Route::middleware(['auth:sanctum', 'is-fan'])->group(function () {
 
+});
+
+// Admin-only
+Route::middleware(['auth:sanctum', 'is-admin'])->group(function () {
+
+});
