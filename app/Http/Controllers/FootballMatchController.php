@@ -39,4 +39,9 @@ class FootballMatchController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function report(): void
+    {
+
+    }
 }
