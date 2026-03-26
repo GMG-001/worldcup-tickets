@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['password', 'email_verified_at', 'remember_token']);
+            $table->dropColumn(['email_verified_at', 'remember_token']);
             $table->enum('role', ['fan', 'admin'])->default('fan')->after('email');
         });
     }
@@ -19,7 +19,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('role');
             $table->timestamp('email_verified_at')->nullable()->after('email');
-            $table->string('password')->after('email_verified_at');
             $table->rememberToken();
         });
     }

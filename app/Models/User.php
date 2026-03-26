@@ -14,6 +14,10 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
 
+    protected $guarded = [];
+
+    protected $hidden = ['password'];
+
     protected $casts = [
         'role' => Role::class,
     ];
