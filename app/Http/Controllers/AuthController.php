@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,12 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        return response()->json($service->register($data), 201);
+        $result = $service->register($data);
+
+        return response()->json([
+            'user'  => new UserResource($result['user']),
+            'token' => $result['token'],
+        ], 201);
     }
 
     public function login(Request $request, AuthService $service): JsonResponse
@@ -27,7 +33,12 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        return response()->json($service->login($data['email'], $data['password']));
+        $result = $service->login($data['email'], $data['password']);
+
+        return response()->json([
+            'user'  => new UserResource($result['user']),
+            'token' => $result['token'],
+        ]);
     }
 
     public function logout(Request $request, AuthService $service): JsonResponse
@@ -37,8 +48,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully.']);
     }
 
-    public function me(Request $request): JsonResponse
+    public function me(Request $request): UserResource
     {
-        return response()->json($request->user());
+        return new UserResource($request->user());
     }
 }
