@@ -25,8 +25,11 @@ class FootballMatchController extends Controller
         return response()->json($footballMatch);
     }
 
-    public function update(UpdateFootballMatchRequest $request, FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
-    {
+    public function update(
+        UpdateFootballMatchRequest $request,
+        FootballMatch $footballMatch,
+        FootballMatchService $service
+    ): JsonResponse {
         return response()->json($service->update($footballMatch, $request->validated()));
     }
 
@@ -39,6 +42,5 @@ class FootballMatchController extends Controller
 
     public function report(): void
     {
-
     }
 }

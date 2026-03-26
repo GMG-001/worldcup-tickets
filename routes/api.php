@@ -40,4 +40,3 @@ Route::prefix('matches')->group(function () {
     Route::post('/', [FootballMatchController::class, 'index']);
     Route::get('{id}', [FootballMatchController::class, 'show']);
 });
-

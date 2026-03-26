@@ -33,8 +33,11 @@ class ReservationController extends Controller
         return response()->json($reservation->load(['ticketCategory.match']));
     }
 
-    public function update(UpdateReservationRequest $request, Reservation $reservation, ReservationService $service): JsonResponse
-    {
+    public function update(
+        UpdateReservationRequest $request,
+        Reservation $reservation,
+        ReservationService $service
+    ): JsonResponse {
         if ($reservation->user_id !== $request->user()->getId()) {
             abort(403);
         }

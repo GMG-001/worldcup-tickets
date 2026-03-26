@@ -10,7 +10,8 @@ class ReservationService
 {
     public function __construct(
         private readonly ReservationRepositoryInterface $repository,
-    ) {}
+    ) {
+    }
 
     public function getByUser(int $userId): Collection
     {

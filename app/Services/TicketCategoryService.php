@@ -10,7 +10,8 @@ class TicketCategoryService
 {
     public function __construct(
         private readonly TicketCategoryRepositoryInterface $repository,
-    ) {}
+    ) {
+    }
 
     public function getAll(): Collection
     {

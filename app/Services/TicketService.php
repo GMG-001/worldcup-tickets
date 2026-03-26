@@ -10,7 +10,8 @@ class TicketService
 {
     public function __construct(
         private readonly TicketRepositoryInterface $repository,
-    ) {}
+    ) {
+    }
 
     public function getByUser(int $userId): Collection
     {

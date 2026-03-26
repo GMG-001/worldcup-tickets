@@ -25,8 +25,11 @@ class TicketCategoryController extends Controller
         return response()->json($ticketCategory->load('match'));
     }
 
-    public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory, TicketCategoryService $service): JsonResponse
-    {
+    public function update(
+        UpdateTicketCategoryRequest $request,
+        TicketCategory $ticketCategory,
+        TicketCategoryService $service
+    ): JsonResponse {
         return response()->json($service->update($ticketCategory, $request->validated()));
     }
 

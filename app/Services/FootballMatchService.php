@@ -10,7 +10,8 @@ class FootballMatchService
 {
     public function __construct(
         private readonly FootballMatchRepositoryInterface $repository,
-    ) {}
+    ) {
+    }
 
     public function getAll(): Collection
     {

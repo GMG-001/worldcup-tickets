@@ -11,7 +11,8 @@ class AuthService
 {
     public function __construct(
         private readonly UserRepositoryInterface $repository,
-    ) {}
+    ) {
+    }
 
     public function register(array $data): array
     {
