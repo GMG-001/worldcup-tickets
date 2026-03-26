@@ -5,20 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TicketCategory\StoreTicketCategoryRequest;
 use App\Http\Requests\TicketCategory\UpdateTicketCategoryRequest;
 use App\Models\TicketCategory;
+use App\Services\TicketCategoryService;
 use Illuminate\Http\JsonResponse;
 
 class TicketCategoryController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(TicketCategoryService $service): JsonResponse
     {
-        return response()->json(TicketCategory::with('match')->get());
+        return response()->json($service->getAll());
     }
 
-    public function store(StoreTicketCategoryRequest $request): JsonResponse
+    public function store(StoreTicketCategoryRequest $request, TicketCategoryService $service): JsonResponse
     {
-        $category = TicketCategory::create($request->validated());
-
-        return response()->json($category, 201);
+        return response()->json($service->create($request->validated()), 201);
     }
 
     public function show(TicketCategory $ticketCategory): JsonResponse
@@ -26,16 +25,14 @@ class TicketCategoryController extends Controller
         return response()->json($ticketCategory->load('match'));
     }
 
-    public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory): JsonResponse
+    public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory, TicketCategoryService $service): JsonResponse
     {
-        $ticketCategory->update($request->validated());
-
-        return response()->json($ticketCategory);
+        return response()->json($service->update($ticketCategory, $request->validated()));
     }
 
-    public function destroy(TicketCategory $ticketCategory): JsonResponse
+    public function destroy(TicketCategory $ticketCategory, TicketCategoryService $service): JsonResponse
     {
-        $ticketCategory->delete();
+        $service->delete($ticketCategory);
 
         return response()->json(null, 204);
     }

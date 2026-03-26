@@ -5,20 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FootballMatch\StoreFootballMatchRequest;
 use App\Http\Requests\FootballMatch\UpdateFootballMatchRequest;
 use App\Models\FootballMatch;
+use App\Services\FootballMatchService;
 use Illuminate\Http\JsonResponse;
 
 class FootballMatchController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(FootballMatchService $service): JsonResponse
     {
-        return response()->json(FootballMatch::all());
+        return response()->json($service->getAll());
     }
 
-    public function store(StoreFootballMatchRequest $request): JsonResponse
+    public function store(StoreFootballMatchRequest $request, FootballMatchService $service): JsonResponse
     {
-        $match = FootballMatch::create($request->validated());
-
-        return response()->json($match, 201);
+        return response()->json($service->create($request->validated()), 201);
     }
 
     public function show(FootballMatch $footballMatch): JsonResponse
@@ -26,16 +25,14 @@ class FootballMatchController extends Controller
         return response()->json($footballMatch);
     }
 
-    public function update(UpdateFootballMatchRequest $request, FootballMatch $footballMatch): JsonResponse
+    public function update(UpdateFootballMatchRequest $request, FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
     {
-        $footballMatch->update($request->validated());
-
-        return response()->json($footballMatch);
+        return response()->json($service->update($footballMatch, $request->validated()));
     }
 
-    public function destroy(FootballMatch $footballMatch): JsonResponse
+    public function destroy(FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
     {
-        $footballMatch->delete();
+        $service->delete($footballMatch);
 
         return response()->json(null, 204);
     }

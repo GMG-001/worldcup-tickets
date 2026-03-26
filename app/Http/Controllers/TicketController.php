@@ -5,28 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Ticket\StoreTicketRequest;
 use App\Http\Requests\Ticket\UpdateTicketRequest;
 use App\Models\Ticket;
+use App\Services\TicketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request, TicketService $service): JsonResponse
     {
-        $tickets = Ticket::with(['match', 'category'])
-            ->where('user_id', $request->user()->getId())
-            ->get();
-
-        return response()->json($tickets);
+        return response()->json($service->getByUser($request->user()->getId()));
     }
 
-    public function store(StoreTicketRequest $request): JsonResponse
+    public function store(StoreTicketRequest $request, TicketService $service): JsonResponse
     {
-        $ticket = Ticket::create([
-            'user_id' => $request->user()->getId(),
-            ...$request->validated(),
-        ]);
-
-        return response()->json($ticket, 201);
+        return response()->json(
+            $service->create($request->user()->getId(), $request->validated()),
+            201,
+        );
     }
 
     public function show(Request $request, Ticket $ticket): JsonResponse
@@ -38,16 +33,14 @@ class TicketController extends Controller
         return response()->json($ticket->load(['match', 'category']));
     }
 
-    public function update(UpdateTicketRequest $request, Ticket $ticket): JsonResponse
+    public function update(UpdateTicketRequest $request, Ticket $ticket, TicketService $service): JsonResponse
     {
-        $ticket->update($request->validated());
-
-        return response()->json($ticket);
+        return response()->json($service->update($ticket, $request->validated()));
     }
 
-    public function destroy(Ticket $ticket): JsonResponse
+    public function destroy(Ticket $ticket, TicketService $service): JsonResponse
     {
-        $ticket->delete();
+        $service->delete($ticket);
 
         return response()->json(null, 204);
     }
