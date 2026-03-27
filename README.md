@@ -2,6 +2,10 @@
 
 A Laravel REST API for managing World Cup 2026 match tickets, with a focus on concurrency safety, atomic seat reservation, and async payment processing.
 
+## Postman Collection
+
+[Open in Postman](https://giorgi-megrelishvili-1-4789456.postman.co/workspace/Giorgi-Megrelishvili's-Workspac~aabff203-9d6f-4346-89ea-0eb766cc36dc/collection/53554883-7e74afc8-56a9-4656-9c5f-b97c62a6f1fa?action=share&creator=53554883&active-environment=53554883-4a996d24-1c60-43ff-8847-fd6e191d256b)
+
 ## Setup
 
 ```bash
