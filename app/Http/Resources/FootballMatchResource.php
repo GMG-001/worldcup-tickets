@@ -17,7 +17,6 @@ class FootballMatchResource extends JsonResource
             'away_team_ka' => $this->getAwayTeamKa(),
             'stadium_en'   => $this->getStadiumEn(),
             'stadium_ka'   => $this->getStadiumKa(),
-            'capacity'     => $this->getCapacity(),
             'match_date'   => $this->getMatchDate(),
             'categories'   => TicketCategoryResource::collection($this->whenLoaded('ticketCategories')),
         ];

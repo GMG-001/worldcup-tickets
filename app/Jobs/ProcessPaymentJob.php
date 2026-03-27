@@ -14,7 +14,7 @@ class ProcessPaymentJob implements ShouldQueue, ShouldBeUnique
     use Queueable;
 
     /** Keep the lock until the job finishes or this many seconds pass. */
-    public int $uniqueFor = 600; // 10 minutes — matches the reservation window
+    public int $uniqueFor = 600;
 
     public function __construct(private readonly int $reservationId)
     {

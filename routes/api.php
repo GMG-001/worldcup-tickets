@@ -38,6 +38,6 @@ Route::middleware(['auth:sanctum', 'is-admin'])->prefix('admin')->group(function
 });
 
 Route::prefix('matches')->group(function () {
-    Route::post('/', [FootballMatchController::class, 'index']);
+    Route::get('/', [FootballMatchController::class, 'index']);
     Route::get('{id}', [FootballMatchController::class, 'show']);
 });

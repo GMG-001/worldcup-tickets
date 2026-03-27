@@ -15,6 +15,12 @@ class FootballMatch extends Model
 
     protected $table = 'matches';
 
+    protected $guarded = [];
+
+    protected $casts = [
+        'match_date' => 'datetime',
+    ];
+
     public function getId(): int
     {
         return $this->id;

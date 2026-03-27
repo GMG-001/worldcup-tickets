@@ -12,6 +12,8 @@ class TicketCategory extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function getId(): int
     {
         return $this->id;
