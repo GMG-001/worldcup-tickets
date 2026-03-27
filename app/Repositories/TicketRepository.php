@@ -10,30 +10,22 @@ class TicketRepository implements TicketRepositoryInterface
 {
     public function getByUser(int $userId): LengthAwarePaginator
     {
-        return Ticket::with(['match', 'category'])
+        $model = $this->getModel();
+
+        return $model->with(['match', 'category'])
             ->where('user_id', $userId)
             ->paginate(15);
     }
 
     public function findWithRelations(int $id): Ticket
     {
-        return Ticket::with(['match', 'category'])->findOrFail($id);
+        $model = $this->getModel();
+
+        return $model->with(['match', 'category'])->findOrFail($id);
     }
 
-    public function create(array $data): Ticket
+    public function getModel(): Ticket
     {
-        return Ticket::create($data);
-    }
-
-    public function update(Ticket $ticket, array $data): Ticket
-    {
-        $ticket->update($data);
-
-        return $ticket;
-    }
-
-    public function delete(Ticket $ticket): void
-    {
-        $ticket->delete();
+        return new Ticket();
     }
 }

@@ -9,28 +9,38 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {
-    public function getByUser(int $userId): Collection
-    {
-        return Reservation::with(['ticketCategory.match'])
-            ->where('user_id', $userId)
-            ->get();
-    }
-
     public function getExpiredPending(): Collection
     {
-        return Reservation::where('status', ReservationStatus::Pending)
+        $model = $this->getModel();
+
+        return $model->where('status', ReservationStatus::Pending)
             ->where('expires_at', '<', now())
             ->get();
     }
 
+    public function findOrFail(int $id): Reservation
+    {
+        $model = $this->getModel();
+
+        return $model->with(
+            [
+                'ticketCategory.match'
+            ]
+        )->findOrFail($id);
+    }
+
     public function lockForUpdate(int $id): ?Reservation
     {
-        return Reservation::lockForUpdate()->find($id);
+        $model = $this->getModel();
+
+        return $model->find($id);
     }
 
     public function create(array $data): Reservation
     {
-        return Reservation::create($data);
+        $model = $this->getModel();
+
+        return $model->create($data);
     }
 
     public function update(Reservation $reservation, array $data): Reservation
@@ -40,8 +50,8 @@ class ReservationRepository implements ReservationRepositoryInterface
         return $reservation;
     }
 
-    public function delete(Reservation $reservation): void
+    public function getModel(): Reservation
     {
-        $reservation->delete();
+        return new Reservation();
     }
 }

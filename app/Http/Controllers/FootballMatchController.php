@@ -27,7 +27,7 @@ class FootballMatchController extends Controller
         return new FootballMatchResource($item);
     }
 
-    public function store(StoreFootballMatchRequest $request, FootballMatchService $service): JsonResponse
+    public function create(StoreFootballMatchRequest $request, FootballMatchService $service): JsonResponse
     {
         $data = $request->validated();
         $item = $service->create($data);
@@ -50,16 +50,10 @@ class FootballMatchController extends Controller
         return new FootballMatchResource($item);
     }
 
-    public function destroy(FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
+    public function report(int $id, FootballMatchService $service): JsonResponse
     {
-        $service->delete($footballMatch);
-
-        return response()->json(null, 204);
-    }
-
-    public function report(FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
-    {
-        $data = $service->report($footballMatch);
+        $item = $service->findOrFail($id);
+        $data = $service->report($item);
 
         return response()->json([
             'match'         => new FootballMatchResource($data['match']),

@@ -19,21 +19,21 @@ Route::prefix('auth')->group(function () {
 Route::middleware(['auth:sanctum', 'is-fan'])->group(function () {
     Route::prefix('tickets')->group(function () {
         Route::get('/', [TicketController::class, 'index']);
-        Route::get('{ticket}', [TicketController::class, 'show']);
+        Route::get('{id}', [TicketController::class, 'show']);
     });
 
     Route::prefix('reservations')->group(function () {
-        Route::get('/', [ReservationController::class, 'index']);
         Route::post('/', [ReservationController::class, 'reserve']);
-        Route::post('{reservation}/pay', [ReservationController::class, 'pay']);
-        Route::delete('{reservation}', [ReservationController::class, 'cancel']);
+        Route::post('{id}/pay', [ReservationController::class, 'pay']);
+        Route::delete('{id}', [ReservationController::class, 'cancel']);
     });
 });
 
 Route::middleware(['auth:sanctum', 'is-admin'])->prefix('admin')->group(function () {
     Route::prefix('matches')->group(function () {
-        Route::post('/', [FootballMatchController::class, 'store']);
-        Route::get('{footballMatch}/report', [FootballMatchController::class, 'report']);
+        Route::post('/', [FootballMatchController::class, 'create']);
+        Route::patch('{id}', [FootballMatchController::class, 'update']);
+        Route::get('{id}/report', [FootballMatchController::class, 'report']);
     });
 });
 

@@ -17,7 +17,5 @@ interface FootballMatchRepositoryInterface
 
     public function update(FootballMatch $match, array $data): FootballMatch;
 
-    public function delete(FootballMatch $match): void;
-
     public function getReportStats(int $matchId): Collection;
 }

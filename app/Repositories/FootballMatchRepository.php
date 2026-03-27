@@ -29,7 +29,9 @@ class FootballMatchRepository implements FootballMatchRepositoryInterface
 
     public function create(array $data): FootballMatch
     {
-        return FootballMatch::create($data);
+        $model = $this->getModel();
+
+        return $model->create($data);
     }
 
     public function update(FootballMatch $match, array $data): FootballMatch
@@ -37,11 +39,6 @@ class FootballMatchRepository implements FootballMatchRepositoryInterface
         $match->update($data);
 
         return $match;
-    }
-
-    public function delete(FootballMatch $match): void
-    {
-        $match->delete();
     }
 
     public function getReportStats(int $matchId): Collection

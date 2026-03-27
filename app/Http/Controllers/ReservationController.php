@@ -14,13 +14,6 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReservationController extends Controller
 {
-    public function index(Request $request, ReservationService $service): AnonymousResourceCollection
-    {
-        return ReservationResource::collection(
-            $service->getByUser($request->user()->getId())
-        );
-    }
-
     public function reserve(StoreReservationRequest $request, ReservationService $service): JsonResponse
     {
         try {
@@ -34,23 +27,16 @@ class ReservationController extends Controller
             ->setStatusCode(201);
     }
 
-    public function pay(Reservation $reservation): JsonResponse
+    public function pay(int $id, ReservationService $service): JsonResponse
     {
-        $this->authorize('pay', $reservation);
+        $reservation = $service->findOrFail($id);
 
-        if ($reservation->getExpiresAt()->isPast()) {
-            return response()->json(['message' => 'Reservation has expired.'], 422);
-        }
-
-        ProcessPaymentJob::dispatch($reservation->getId());
-
-        return response()->json(['message' => 'Payment is being processed.'], 202);
+        return $service->pay($reservation);
     }
 
-    public function cancel(Reservation $reservation, ReservationService $service): JsonResponse
+    public function cancel(int $id, ReservationService $service): JsonResponse
     {
-        $this->authorize('cancel', $reservation);
-
+        $reservation = $service->findOrFail($id);
         $service->cancel($reservation);
 
         return response()->json(null, 204);

@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\FootballMatchRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class FootballMatchService
+class FootballMatchService extends BaseService
 {
     public function __construct(
         private readonly FootballMatchRepositoryInterface $repository,
@@ -32,11 +32,6 @@ class FootballMatchService
     public function update(FootballMatch $match, array $data): FootballMatch
     {
         return $this->repository->update($match, $data);
-    }
-
-    public function delete(FootballMatch $match): void
-    {
-        $this->repository->delete($match);
     }
 
     public function report(FootballMatch $match): array

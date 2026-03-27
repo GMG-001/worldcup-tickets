@@ -9,21 +9,20 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TicketCategoryRepository implements TicketCategoryRepositoryInterface
 {
-    public function all(): Collection
-    {
-        return TicketCategory::with('match')->get();
-    }
-
     public function lockForUpdate(int $id): TicketCategory
     {
-        return TicketCategory::lockForUpdate()->findOrFail($id);
+        $model = $this->getModel();
+
+        return $model->lockForUpdate()->findOrFail($id);
     }
 
     public function decrementAvailableOrFail(int $id, int $amount): void
     {
-        TicketCategory::lockForUpdate()->findOrFail($id);
+        $model = $this->getModel();
 
-        $affected = TicketCategory::where('id', $id)
+        $model->lockForUpdate()->findOrFail($id);
+
+        $affected = $model->where('id', $id)
             ->where('available_count', '>=', $amount)
             ->decrement('available_count', $amount);
 
@@ -34,23 +33,13 @@ class TicketCategoryRepository implements TicketCategoryRepositoryInterface
 
     public function incrementAvailable(int $id, int $amount): void
     {
-        TicketCategory::where('id', $id)->increment('available_count', $amount);
+        $model = $this->getModel();
+
+        $model->where('id', $id)->increment('available_count', $amount);
     }
 
-    public function create(array $data): TicketCategory
+    public function getModel(): TicketCategory
     {
-        return TicketCategory::create($data);
-    }
-
-    public function update(TicketCategory $category, array $data): TicketCategory
-    {
-        $category->update($data);
-
-        return $category;
-    }
-
-    public function delete(TicketCategory $category): void
-    {
-        $category->delete();
+        return new TicketCategory();
     }
 }

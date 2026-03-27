@@ -4,15 +4,17 @@ namespace App\Services;
 
 use App\Enums\ReservationStatus;
 use App\Enums\TicketStatus;
+use App\Jobs\ProcessPaymentJob;
 use App\Models\Reservation;
 use App\Repositories\Interfaces\ReservationRepositoryInterface;
 use App\Repositories\Interfaces\TicketCategoryRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class ReservationService
+class ReservationService extends BaseService
 {
     public function __construct(
         private readonly ReservationRepositoryInterface $repository,
@@ -21,9 +23,9 @@ class ReservationService
     ) {
     }
 
-    public function getByUser(int $userId): Collection
+    public function findOrFail(int $id): Reservation
     {
-        return $this->repository->getByUser($userId);
+        return $this->repository->findOrFail($id);
     }
 
     public function reserve(int $userId, array $data): Reservation
@@ -72,8 +74,23 @@ class ReservationService
         });
     }
 
+    public function pay(Reservation $reservation): JsonResponse
+    {
+        $this->authorize('pay', $reservation);
+
+        if ($reservation->getExpiresAt()->isPast()) {
+            return response()->json(['message' => 'Reservation has expired.'], 422);
+        }
+
+        ProcessPaymentJob::dispatch($reservation->getId());
+
+        return response()->json(['message' => 'Payment is being processed.'], 202);
+    }
+
     public function cancel(Reservation $reservation): void
     {
+        $this->authorize('cancel', $reservation);
+
         DB::transaction(function () use ($reservation): void {
             $locked = $this->repository->lockForUpdate($reservation->getId());
 

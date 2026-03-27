@@ -6,10 +6,10 @@ use App\Models\Ticket;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class TicketService
+class TicketService extends BaseService
 {
     public function __construct(
-        private readonly TicketRepositoryInterface $repository,
+        private TicketRepositoryInterface $repository,
     ) {
     }
 
@@ -20,24 +20,10 @@ class TicketService
 
     public function show(int $id): Ticket
     {
-        return $this->repository->findWithRelations($id);
-    }
+        $ticket = $this->repository->findWithRelations($id);
 
-    public function create(int $userId, array $data): Ticket
-    {
-        return $this->repository->create([
-            'user_id' => $userId,
-            ...$data,
-        ]);
-    }
+        $this->authorize('view', $ticket);
 
-    public function update(Ticket $ticket, array $data): Ticket
-    {
-        return $this->repository->update($ticket, $data);
-    }
-
-    public function delete(Ticket $ticket): void
-    {
-        $this->repository->delete($ticket);
+        return $ticket;
     }
 }

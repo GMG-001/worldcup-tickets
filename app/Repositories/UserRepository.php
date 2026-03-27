@@ -9,11 +9,20 @@ class UserRepository implements UserRepositoryInterface
 {
     public function create(array $data): User
     {
-        return User::create($data);
+        $model = $this->getModel();
+
+        return $model->create($data);
     }
 
     public function findByEmail(string $email): ?User
     {
-        return User::where('email', $email)->first();
+        $model = $this->getModel();
+
+        return$model->where('email', $email)->first();
+    }
+
+    public function getModel(): User
+    {
+        return new User();
     }
 }

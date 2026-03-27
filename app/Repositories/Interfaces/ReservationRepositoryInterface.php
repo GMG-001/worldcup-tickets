@@ -7,15 +7,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface ReservationRepositoryInterface
 {
-    public function getByUser(int $userId): Collection;
-
     public function getExpiredPending(): Collection;
+
+    public function findOrFail(int $id): Reservation;
 
     public function lockForUpdate(int $id): ?Reservation;
 
     public function create(array $data): Reservation;
 
     public function update(Reservation $reservation, array $data): Reservation;
-
-    public function delete(Reservation $reservation): void;
 }

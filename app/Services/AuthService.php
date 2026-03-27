@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class AuthService
+class AuthService extends BaseService
 {
     public function __construct(
         private readonly UserRepositoryInterface $repository,
@@ -19,7 +20,7 @@ class AuthService
         $user = $this->repository->create([
             'name'     => $data['name'],
             'email'    => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
             'role'     => 'fan',
         ]);
 
@@ -28,16 +29,16 @@ class AuthService
         return ['user' => $user, 'token' => $token];
     }
 
-    public function login(string $email, string $password): array
+    public function login(array $credentials): array
     {
-        $user = $this->repository->findByEmail($email);
-
-        if (! $user || ! Hash::check($password, $user->password)) {
+        if (! Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        /** @var User $user */
+        $user  = Auth::user();
         $token = $user->createToken('api-token')->plainTextToken;
 
         return ['user' => $user, 'token' => $token];

@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    public function register(Request $request, AuthService $service): JsonResponse
+    public function register(RegisterRequest $request, AuthService $service): JsonResponse
     {
-        $data = $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
-
+        $data = $request->validated();
         $result = $service->register($data);
 
         return response()->json([
@@ -26,14 +22,11 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request, AuthService $service): JsonResponse
+    public function login(LoginRequest $request, AuthService $service): JsonResponse
     {
-        $data = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $data = $request->validated();
 
-        $result = $service->login($data['email'], $data['password']);
+        $result = $service->login($data);
 
         return response()->json([
             'user'  => new UserResource($result['user']),
