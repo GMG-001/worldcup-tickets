@@ -17,6 +17,15 @@ class ExpireReservationsJob implements ShouldQueue, ShouldBeUnique
      */
     public int $uniqueFor = 120;
 
+    /** Retry up to 3 times on transient exceptions. */
+    public int $tries = 3;
+
+    /** Short backoff: next scheduled run is in ~60 s, so keep delays small. */
+    public function backoff(): array
+    {
+        return [5, 15];
+    }
+
     public function handle(ReservationService $service): void
     {
         $service->expireStale();

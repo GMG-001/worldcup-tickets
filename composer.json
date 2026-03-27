@@ -71,6 +71,13 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "local-prepare": [
+            "@composer install",
+            "@php artisan migrate:fresh --seed"
+        ],
+        "testing-prepare": [
+            "@php artisan migrate:fresh --env=testing"
         ]
     },
     "extra": {
