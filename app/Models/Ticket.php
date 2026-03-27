@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ticket extends Model
 {
+    protected $guarded = [];
+
     protected $casts = [
         'status' => TicketStatus::class,
     ];

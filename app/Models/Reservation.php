@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Reservation extends Model
 {
+    protected $guarded = [];
+
     protected $casts = [
         'status'     => ReservationStatus::class,
         'expires_at' => 'datetime',

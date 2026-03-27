@@ -19,7 +19,7 @@ class AuthService
         $user = $this->repository->create([
             'name'     => $data['name'],
             'email'    => $data['email'],
-            'password' => $data['password'],
+            'password' => bcrypt($data['password']),
             'role'     => 'fan',
         ]);
 

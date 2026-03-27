@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\FootballMatch;
 use App\Repositories\Interfaces\FootballMatchRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class FootballMatchService
@@ -36,5 +37,16 @@ class FootballMatchService
     public function delete(FootballMatch $match): void
     {
         $this->repository->delete($match);
+    }
+
+    public function report(FootballMatch $match): array
+    {
+        $categories = $this->repository->getReportStats($match->getId());
+
+        return [
+            'match'         => $match,
+            'total_revenue' => $categories->sum('revenue'),
+            'categories'    => $categories,
+        ];
     }
 }

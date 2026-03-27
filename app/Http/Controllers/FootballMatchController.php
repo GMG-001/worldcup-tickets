@@ -57,8 +57,21 @@ class FootballMatchController extends Controller
         return response()->json(null, 204);
     }
 
-    public function report(): void
+    public function report(FootballMatch $footballMatch, FootballMatchService $service): JsonResponse
     {
-        //
+        $data = $service->report($footballMatch);
+
+        return response()->json([
+            'match'         => new FootballMatchResource($data['match']),
+            'total_revenue' => $data['total_revenue'],
+            'categories'    => $data['categories']->map(fn ($cat) => [
+                'name'            => $cat->getName(),
+                'price'           => $cat->getPrice(),
+                'seat_count'      => $cat->getSeatCount(),
+                'available_count' => $cat->getAvailableCount(),
+                'tickets_sold'    => $cat->tickets_sold,
+                'revenue'         => $cat->revenue,
+            ]),
+        ]);
     }
 }

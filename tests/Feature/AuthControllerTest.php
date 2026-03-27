@@ -106,7 +106,7 @@ class AuthControllerTest extends TestCase
     {
         User::factory()->create([
             'email'    => 'john@example.com',
-            'password' => bcrypt('Password1!'),
+            'password' => 'Password1!',
         ]);
 
         $response = $this->postJson('/api/auth/login', [
@@ -129,7 +129,7 @@ class AuthControllerTest extends TestCase
     {
         User::factory()->create([
             'email'    => 'john@example.com',
-            'password' => bcrypt('Password1!'),
+            'password' => 'Password1!',
         ]);
 
         $response = $this->postJson('/api/auth/login', [

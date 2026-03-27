@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Enums\TicketStatus;
 use App\Models\FootballMatch;
+use App\Models\TicketCategory;
 use App\Repositories\Interfaces\FootballMatchRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -40,6 +42,18 @@ class FootballMatchRepository implements FootballMatchRepositoryInterface
     public function delete(FootballMatch $match): void
     {
         $match->delete();
+    }
+
+    public function getReportStats(int $matchId): Collection
+    {
+        return TicketCategory::withCount([
+            'tickets as tickets_sold' => fn ($q) => $q->where('status', TicketStatus::Issued),
+        ])
+            ->where('match_id', $matchId)
+            ->get()
+            ->each(function (TicketCategory $category): void {
+                $category->revenue = $category->tickets_sold * $category->getPrice();
+            });
     }
 
     public function getModel(): FootballMatch

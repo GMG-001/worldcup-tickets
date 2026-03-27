@@ -9,6 +9,10 @@ interface ReservationRepositoryInterface
 {
     public function getByUser(int $userId): Collection;
 
+    public function getExpiredPending(): Collection;
+
+    public function lockForUpdate(int $id): ?Reservation;
+
     public function create(array $data): Reservation;
 
     public function update(Reservation $reservation, array $data): Reservation;
