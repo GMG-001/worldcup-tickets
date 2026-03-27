@@ -3,11 +3,16 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Database\Factories\FootballMatchFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FootballMatch extends Model
 {
+    /** @use HasFactory<FootballMatchFactory> */
+    use HasFactory;
+
     protected $table = 'matches';
 
     public function getId(): int
