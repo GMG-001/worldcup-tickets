@@ -1,0 +1,352 @@
+{
+	"info": {
+		"_postman_id": "7e74afc8-56a9-4656-9c5f-b97c62a6f1fa",
+		"name": "worldcup",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "53554883",
+		"_collection_link": "https://giorgi-megrelishvili-1-4789456.postman.co/workspace/Giorgi-Megrelishvili's-Workspac~aabff203-9d6f-4346-89ea-0eb766cc36dc/collection/53554883-7e74afc8-56a9-4656-9c5f-b97c62a6f1fa?action=share&source=collection_link&creator=53554883"
+	},
+	"item": [
+		{
+			"name": "user register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"Password\",\n    \"password_confirmation\": \"Password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "worldcup-tickets.test/api/auth/register",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"Password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "worldcup-tickets.test/api/auth/login",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ME",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|JjksTZKjbOq565Smv2SJkWRNHXWJVVrWnqcvXDz5448bd5f2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "worldcup-tickets.test/api/auth/me",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tickets",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "worldcup-tickets.test/api/tickets",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"tickets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tickets show",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "worldcup-tickets.test/api/tickets/1",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"tickets",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reservations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ticket_category_id\": 2,\n    \"quantity\": 2,\n    \"idempotency_key\": \"Passwodrd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "worldcup-tickets.test/api/reservations",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "worldcup-tickets.test/api/reservations/1/pay",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"reservations",
+						"1",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "matches",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "worldcup-tickets.test/api/matches",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"matches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"home_team_en\": \"Brazil\",\n    \"home_team_ka\": \"ბრაზილია\",\n    \"away_team_en\": \"Germany\",\n    \"away_team_ka\": \"გერმანია\",\n    \"stadium_en\"  : \"MetLife Stadium\",\n    \"stadium_ka\"  : \"მეტლაიფ სტადიონი\",\n    \"match_date\"  : \"2026-06-15\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "worldcup-tickets.test/api/admin/matches",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"admin",
+						"matches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "report",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|o97e7BNzzkWvPeRKyBJ4dwjInz5AHPOxLkXCiKcG6d123080",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"home_team_en\": \"Brazil\",\n    \"home_team_ka\": \"ბრაზილია\",\n    \"away_team_en\": \"Germany\",\n    \"away_team_ka\": \"გერმანია\",\n    \"stadium_en\"  : \"MetLife Stadium\",\n    \"stadium_ka\"  : \"მეტლაიფ სტადიონი\",\n    \"match_date\"  : \"2026:04:10\"\n}\n\n"
+				},
+				"url": {
+					"raw": "worldcup-tickets.test/api/admin/matches/1/report",
+					"host": [
+						"worldcup-tickets",
+						"test"
+					],
+					"path": [
+						"api",
+						"admin",
+						"matches",
+						"1",
+						"report"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
