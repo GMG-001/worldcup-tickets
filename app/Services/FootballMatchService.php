@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\FootballMatch;
 use App\Repositories\Interfaces\FootballMatchRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FootballMatchService
 {
@@ -13,9 +13,14 @@ class FootballMatchService
     ) {
     }
 
-    public function getAll(): Collection
+    public function index(): LengthAwarePaginator
     {
-        return $this->repository->all();
+        return $this->repository->allWithCategories();
+    }
+
+    public function findOrFail(int $id): FootballMatch
+    {
+        return $this->repository->findOrFail($id);
     }
 
     public function create(array $data): FootballMatch

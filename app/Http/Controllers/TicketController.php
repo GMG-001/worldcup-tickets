@@ -15,7 +15,17 @@ class TicketController extends Controller
 {
     public function index(Request $request, TicketService $service): AnonymousResourceCollection
     {
-        return TicketResource::collection($service->getByUser($request->user()->getId()));
+        $authUser = $request->user();
+        $items = $service->getByUser($authUser->getId());
+
+        return TicketResource::collection($items);
+    }
+
+    public function show(Ticket $ticket, TicketService $service): TicketResource
+    {
+        $this->authorize('view', $ticket);
+
+        return new TicketResource($service->show($ticket->getId()));
     }
 
     public function store(StoreTicketRequest $request, TicketService $service): JsonResponse
@@ -26,15 +36,6 @@ class TicketController extends Controller
         return (new TicketResource($item))
             ->response()
             ->setStatusCode(201);
-    }
-
-    public function show(Request $request, Ticket $ticket): TicketResource
-    {
-        if ($ticket->user_id !== $request->user()->getId()) {
-            abort(403);
-        }
-
-        return new TicketResource($ticket->load(['match', 'category']));
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket, TicketService $service): TicketResource

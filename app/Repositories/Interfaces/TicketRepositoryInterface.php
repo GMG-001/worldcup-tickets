@@ -3,11 +3,13 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\Ticket;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface TicketRepositoryInterface
 {
-    public function getByUser(int $userId): Collection;
+    public function getByUser(int $userId): LengthAwarePaginator;
+
+    public function findWithRelations(int $id): Ticket;
 
     public function create(array $data): Ticket;
 

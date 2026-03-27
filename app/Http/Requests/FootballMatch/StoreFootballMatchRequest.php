@@ -20,7 +20,7 @@ class StoreFootballMatchRequest extends FormRequest
             'away_team_ka' => ['required', 'string', 'max:255'],
             'stadium_en'   => ['required', 'string', 'max:255'],
             'stadium_ka'   => ['required', 'string', 'max:255'],
-            'match_date'   => ['required', 'date', 'after:now'],
+            'match_date'   => ['required', 'date', 'after:now', 'date_format:Y-m-d'],
         ];
     }
 }

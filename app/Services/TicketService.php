@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Ticket;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TicketService
 {
@@ -13,9 +13,14 @@ class TicketService
     ) {
     }
 
-    public function getByUser(int $userId): Collection
+    public function getByUser(int $userId): LengthAwarePaginator
     {
         return $this->repository->getByUser($userId);
+    }
+
+    public function show(int $id): Ticket
+    {
+        return $this->repository->findWithRelations($id);
     }
 
     public function create(int $userId, array $data): Ticket

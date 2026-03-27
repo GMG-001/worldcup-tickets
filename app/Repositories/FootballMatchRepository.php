@@ -5,12 +5,24 @@ namespace App\Repositories;
 use App\Models\FootballMatch;
 use App\Repositories\Interfaces\FootballMatchRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FootballMatchRepository implements FootballMatchRepositoryInterface
 {
-    public function all(): Collection
+    public function allWithCategories(): LengthAwarePaginator
     {
-        return FootballMatch::all();
+        $model = $this->getModel();
+
+        return $model->with('ticketCategories')
+            ->orderBy('match_date')
+            ->paginate(15);
+    }
+
+    public function findOrFail(int $id): FootballMatch
+    {
+        $model = $this->getModel();
+
+        return $model->with('ticketCategories')->findOrFail($id);
     }
 
     public function create(array $data): FootballMatch
@@ -28,5 +40,10 @@ class FootballMatchRepository implements FootballMatchRepositoryInterface
     public function delete(FootballMatch $match): void
     {
         $match->delete();
+    }
+
+    public function getModel(): FootballMatch
+    {
+        return new FootballMatch();
     }
 }

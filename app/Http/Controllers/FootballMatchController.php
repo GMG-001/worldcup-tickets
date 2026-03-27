@@ -9,12 +9,22 @@ use App\Models\FootballMatch;
 use App\Services\FootballMatchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FootballMatchController extends Controller
 {
     public function index(FootballMatchService $service): AnonymousResourceCollection
     {
-        return FootballMatchResource::collection($service->getAll());
+        $items = $service->index();
+
+        return FootballMatchResource::collection($items);
+    }
+
+    public function show(int $id, FootballMatchService $service): FootballMatchResource
+    {
+        $item = $service->findOrFail($id);
+
+        return new FootballMatchResource($item);
     }
 
     public function store(StoreFootballMatchRequest $request, FootballMatchService $service): JsonResponse
@@ -27,18 +37,14 @@ class FootballMatchController extends Controller
             ->setStatusCode(201);
     }
 
-    public function show(FootballMatch $footballMatch): FootballMatchResource
-    {
-        return new FootballMatchResource($footballMatch->load('ticketCategories'));
-    }
-
     public function update(
+        int $id,
         UpdateFootballMatchRequest $request,
-        FootballMatch $footballMatch,
         FootballMatchService $service
     ): FootballMatchResource {
-
         $data = $request->validated();
+
+        $footballMatch = $service->findOrFail($id);
         $item = $service->update($footballMatch, $data);
 
         return new FootballMatchResource($item);

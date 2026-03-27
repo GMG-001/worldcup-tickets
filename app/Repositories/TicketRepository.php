@@ -4,15 +4,20 @@ namespace App\Repositories;
 
 use App\Models\Ticket;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TicketRepository implements TicketRepositoryInterface
 {
-    public function getByUser(int $userId): Collection
+    public function getByUser(int $userId): LengthAwarePaginator
     {
         return Ticket::with(['match', 'category'])
             ->where('user_id', $userId)
-            ->get();
+            ->paginate(15);
+    }
+
+    public function findWithRelations(int $id): Ticket
+    {
+        return Ticket::with(['match', 'category'])->findOrFail($id);
     }
 
     public function create(array $data): Ticket
